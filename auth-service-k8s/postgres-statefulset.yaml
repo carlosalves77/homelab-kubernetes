@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: postgres-auth
-    annotations:
+  annotations:
       # Sobe primeiro do que o deployment do service no ArgoCD  
     argocd.argoproj.io/sync-wave: "-1"  
 spec:
