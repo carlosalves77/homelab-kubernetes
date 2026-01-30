@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-orders
+  namespace: default
+  labels:
+    app: postgres-orders
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      name: postgres
+  clusterIP: None
+  selector:
+    app: postgres-orders

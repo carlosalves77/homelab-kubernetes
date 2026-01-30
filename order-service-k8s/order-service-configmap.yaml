@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orders-config
+  namespace: default
+data:
+  POSTGRES_DB: orders_database
+  POSTGRES_USER: carl_admin
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-orders:5432/orders_database
+  SPRING_DATASOURCE_USERNAME: carl_admin
