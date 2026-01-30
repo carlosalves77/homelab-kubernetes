@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: default
+  labels:
+    app: notification-service
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: carlosalves77/notification-service:0.0.5
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4008
+              protocol: TCP
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xms128m -Xmx192m -XX:+UseSerialGC"
+            - name: SERVER_PORT
+              value: "4008"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"
+            - name: MAILTRAP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: notification-secrets
+                  key: mailtrap-key
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
