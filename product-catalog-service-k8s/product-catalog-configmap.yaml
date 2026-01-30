@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-config
+  namespace: default
+data:
+  # Configurações do Banco de Dados
+  POSTGRES_DB: "product_service_database"
+  POSTGRES_USER: "product_service_admin"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-product:5432/product_service_database"
+  SPRING_DATASOURCE_USERNAME: "product_service_admin"
