@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-config
+  namespace: default
+data:
+  POSTGRES_DB: "payment_database"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-payment:5432/payment_database"
+  SPRING_DATASOURCE_USERNAME: "payment_service_admin"

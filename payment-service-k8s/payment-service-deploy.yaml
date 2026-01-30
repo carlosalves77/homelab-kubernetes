@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: default
+  labels:
+    app: payment-service
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+        - name: payment-service
+          image: carlosalves77/payment-service:0.0.8
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4007
+              protocol: TCP
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xms128m -Xmx192m -XX:+UseSerialGC"
+            - name: SERVER_PORT
+              value: "4007"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+            
+            # --- Kafka (Direto, igual aos outros services) ---
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"
+
+            # --- Banco de Dados (Via ConfigMap) ---
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: payment-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: payment-config
+                  key: SPRING_DATASOURCE_USERNAME
+            
+            # --- Segredos (Via Secret) ---
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: postgres-password
+            
+            # --- Configurações Extras ---
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "update"
+            - name: SPRING_JPA_DATABASE_PLATFORM
+              value: "org.hibernate.dialect.PostgreSQLDialect"
+            
+            # --- Chaves de API e Tokens ---
+            - name: STRIPE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: stripe-api-key
+            - name: WEBHOOK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: webhook-secret-key
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-database-secret
+                  key: jwt-secret-key
+
+            # --- Docs ---
+            - name: SPRINGDOC_API_DOCS_ENABLED
+              value: "true"
+            - name: SPRINGDOC_SWAGGER_UI_ENABLED
+              value: "true"
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
