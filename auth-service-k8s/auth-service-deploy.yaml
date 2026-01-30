@@ -5,6 +5,9 @@ metadata:
   namespace: default
   labels:
     app: auth-service
+    annotations:
+      # Sobe logo após do banco de dados no argoCD  
+    argocd.argoproj.io/sync-wave: "0"  
 spec:
   replicas: 1
   revisionHistoryLimit: 10
