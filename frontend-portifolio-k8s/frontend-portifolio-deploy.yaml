@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: carlosalves77/portifolio-project-frontend:v.1.0.7
+          image: carlosalves77/portifolio-project-frontend:v.1.0.8
           imagePullPolicy: Always
           ports:
             - containerPort: 80
