@@ -22,6 +22,7 @@ O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O ace
 ####    •   Frontend: React + Vite
 ####    •   Backend: Java Spring Boot (Microservices)
 ####    •   Banco: PostgreSQL
+####    •   GitOps: ArgoCD
 
 ## Deploy das Aplicações (Helm Charts)
 
