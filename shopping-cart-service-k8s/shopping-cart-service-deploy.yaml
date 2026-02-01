@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: shopping-cart-service
-          image: carlosalves77/shopping-cart-service:0.0.5
+          image: carlosalves77/shopping-cart-service:0.0.7
           imagePullPolicy: Always
           ports:
             - containerPort: 4006
