@@ -25,12 +25,66 @@ O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O ace
 ####    •   Banco: PostgreSQL
 ####    •   GitOps: ArgoCD
 
-## Deploy das Aplicações 
+--- 
+
+## Deploy e GitOps
+
+O deploy das aplicações segue a metodologia **GitOps**. O Argo CD monitora este repositório e sincroniza automaticamente qualquer alteração feita nos manifestos YAML com o estado do cluster.
+
+###  Estrutura dos Manifestos
+
+A organização dos recursos Kubernetes está dividida por responsabilidade, contendo todos os microsserviços do ecossistema:
+
+```plaintext
+├── apps/
+│   ├── api-gateway/           # Spring Cloud Gateway (Entrada)
+│   ├── auth-service/          # Autenticação & Segurança
+│   ├── cart-service/          # Gerenciamento de Carrinho
+│   ├── notification-service/  # Disparo de Notificações
+│   ├── order-service/         # Processamento de Pedidos
+│   ├── payment-service/       # Integração de Pagamentos
+│   ├── product-service/       # Catálogo de Produtos
+│   └── frontend/              # Front-end React (Nginx)
+├── infra/
+│   ├── database/              # PostgreSQL (StatefulSet + PVC + Secrets)
+│   ├── monitoring/            # Kube-Prometheus-Stack (Helm Values)
+│   └── argocd/                # Definições das "Applications" do Argo
+└── cloudflare/                # Configuração do Tunnel (Cloudflared)
+
+``` 
 
 
-#### •  frontend/: React SPA
-#### • backend/: API Gateway + Auth Service (Spring Boot)
-#### • database/: PostgreSQL com persistência (PVC)
+#### •  Frontend/: React SPA
+#### • Backend/: API Gateway, Auth Service, Product Service, Order Service, Payment Service, Cart Service, Notification Service.
+#### • Database/: PostgreSQL com persistência (PVC)
+
+
+Pipeline de CI/CD 
+
+A automação é garantida via GitHub Actions e Argo CD. Nenhum deploy manual é necessário para as aplicações.
+
+1. CI (Integração): Ao commitar no repositório da aplicação (código Java/React), o GitHub Actions executa os testes, builda a imagem Docker e publica no Docker Hub com uma tag única (ex: v0.0.5-a1b2c).
+
+2. CD (Entrega): O pipeline atualiza automaticamente a tag da imagem no arquivo deployment.yaml deste repositório.
+
+3. Sync: O Argo CD detecta a mudança no Git e atualiza os Pods no cluster K3s em tempo real.
+
+```
+
+    Dev[Dev Push] -->|Gatilho| CI[GitHub Actions]
+    CI -->|Build & Push| Registry[Docker Hub]
+    CD -->|Update Tag| Git[Infra Repo (YAML)]
+    Git -->|Sync| Argo[Argo CD]
+    Argo -->|Deploy| K8s[Cluster K3s]
+
+
+```
+
+### Dashboard ArgoCD
+
+![ArgoCD](./images/argoCD.png)
+
+--- 
 
 ## Observabilidade (Prometheus & Grafana)
 
