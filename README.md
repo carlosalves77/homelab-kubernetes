@@ -5,11 +5,13 @@ Este repositório documenta a Infraestrutura como Código (IaC) e os manifestos 
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-K3s-blue)
 ![OS](https://img.shields.io/badge/OS-Ubuntu%20Server-orange)
-![Gateway](https://img.shields.io/badge/Network-Cloudflare%20Tunnel-f38020)
+![Gateway](https://img.shields.io/badge/Network-Cloudflare%20Tunnel-f38020)  
+![ArgoCD](https://img.shields.io/badge/Tech-Argo--CD-orange)
+
 
 ## Arquitetura
 
-O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O acesso externo é gerenciado via Cloudflare Tunnel, eliminando a necessidade de abrir portas no roteador (CGNAT friendly).
+O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O acesso externo é gerenciado via Cloudflare Tunnel, eliminando a necessidade de abrir portas no roteador.
 
 ## Stack Tecnológica
 
@@ -17,17 +19,14 @@ O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O ace
 #### • Cluster K8s: [K3s](https://k3s.io/)
 #### • Networking: Cloudflare Tunnel (cloudflared)
 #### • Observabilidade: Prometheus & Grafana (via Helm)
-#### • Gerenciamento de Pacotes: Helm
 #### • Aplicações:
 ####    •   Frontend: React + Vite
 ####    •   Backend: Java Spring Boot (Microservices)
 ####    •   Banco: PostgreSQL
 ####    •   GitOps: ArgoCD
 
-## Deploy das Aplicações (Helm Charts)
+## Deploy das Aplicações 
 
-Todo o gerenciamento das aplicações é feito via Helm. Criei um chart com front web e backend que sobe toda a stack.
-Estrutura do Chart
 
 #### •  frontend/: React SPA
 #### • backend/: API Gateway + Auth Service (Spring Boot)

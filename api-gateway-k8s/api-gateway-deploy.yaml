@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api-gateway-container
-          image: carlosalves77/api-gateway:0.0.5
+          image: carlosalves77/api-gateway:0.0.8
           imagePullPolicy: Always
           ports:
             - containerPort: 4000
