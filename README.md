@@ -9,9 +9,22 @@ Este repositório documenta a Infraestrutura como Código (IaC) e os manifestos 
 ![ArgoCD](https://img.shields.io/badge/Tech-Argo--CD-orange)
 
 
+## ⚙️ Hardware & Restrições
+O cluster roda em um hardware limitado, exigindo otimização de recursos (CPU/RAM).
+
+| Componente | Especificação |
+| :--- | :--- |
+| **Dispositivo** | Notebook Dell 3420 |
+| **CPU** | Intel Core i5 (4 Cores) |
+| **RAM** | 8 GB DDR4 |
+| **Armazenamento** | SSD 256GB |
+| **OS Host** | Ubuntu Server 22.04 LTS |
+
+
 ## Arquitetura
 
 O cluster é um **Single Node** rodando K3s em bare-metal (Ubuntu Server). O acesso externo é gerenciado via Cloudflare Tunnel, eliminando a necessidade de abrir portas no roteador.
+
 
 ## Stack Tecnológica
 
