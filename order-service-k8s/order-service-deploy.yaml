@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: orders-service
-          image: carlosalves77/orders-service:0.0.2
+          image: carlosalves77/orders-service:0.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 4009
