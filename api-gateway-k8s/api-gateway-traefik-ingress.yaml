@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway-ingress
+  namespace: default
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: default-api-gateway-cors@kubernetescrd, default-api-gateway-ratelimit@kubernetescrd
+    argocd.argoproj.io/tracking-id: api-gateway-service:networking.k8s.io/Ingress:default/api-gateway-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: api.carldev.online
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway-service
+            port:
+              number: 4000
