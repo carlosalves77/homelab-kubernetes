@@ -57,6 +57,11 @@ spec:
                 configMapKeyRef:
                   name: orders-config
                   key: SPRING_DATASOURCE_USERNAME
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: orders-secrets
+                  key: jwt-secret-key          
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
