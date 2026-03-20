@@ -36,7 +36,7 @@ spec:
             - name: SERVER_PORT
               value: "4004"
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-              value: "validate"
+              value: "create"
             - name: SPRING_JPA_OPEN_IN_VIEW
               value: "false"
             - name: SPRING_FLYWAY_ENABLED
