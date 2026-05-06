@@ -4,7 +4,7 @@ metadata:
   name: frontend-ingress
   namespace: default
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: default-frontend-security-headers@kubernetescrd, default-frontend-ratelimit@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: default-frontend-security-headers@kubernetescrd, default-frontend-ratelimit@kubernetescrd, default-bouncer@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:
